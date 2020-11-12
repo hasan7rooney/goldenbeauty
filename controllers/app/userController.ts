@@ -1,18 +1,24 @@
 
 import {Request, Response} from "express";
 import * as validate from "validate.js"
-import PhoneFormat from "../helpers/phone";
-import { comparePassword, errRes, getOTP, hashMyPassword, okRes, paginate, sendSMS } from "../helpers/tools";
-import Validate from "../helpers/validation"
+import PhoneFormat from "../../helpers/phone";
+import { comparePassword, errRes, getOTP, hashMyPassword, okRes, paginate, sendSMS } from "../../helpers/tools";
+import Validate from "../../helpers/validation"
 import * as bcrypt from "bcrypt";
-import { User } from "../src/entity/User";
+import { User } from "../../src/entity/User";
 import * as jwt from "jsonwebtoken";
-import config from "../config";
+import config from "../../config";
 import { Like, Raw } from "typeorm";
-import { Category } from "../src/entity/Category";
-import { Product } from "../src/entity/Products";
+import { Category } from "../../src/entity/Category";
+import { Product } from "../../src/entity/Products";
 
 export default class UserController{
+    static makeCategory(arg0: string, makeCategory: any) {
+        throw new Error("Method not implemented.");
+    }
+    static makeProduct(arg0: string, makeProduct: any) {
+        throw new Error("Method not implemented.");
+    }
 //------------------------------------------------------------------------------------------------//
 
 
@@ -108,50 +114,9 @@ static OTP = async (req, res): Promise<object> => {
  //----------------------------------------------------------------------//
 
 
-    static async makeCategory(req:Request, res:Response){
-      let notValid = validate(req.body, Validate.makeCategory());
-      if (notValid) return errRes(res, notValid);
+
+
     
-  
-   let category: any
-  category = await Category.create({
-     ...req.body,
-     active: true
-  })
-  await category.save()
- 
-  
-  return okRes(res, { data: { category } });
-  }
-
-  
- //----------------------------------------------------------------------//
-
-
-
-
-
- static async makeProduct(req:Request, res:Response){
-  let notValid = validate(req.body, Validate.makeProduct());
-  if (notValid) return errRes(res, notValid);
-  let  category = req.params.category;
-
-let product: any
-product = await Product.create({
- ...req.body,
- active: true,
- category
-})
-await product.save()
-
-
-return okRes(res, { data: { product } });
-}
-  
-
-
-
-    //----------------------------------------------------------------------//
 
     static async getCategories(req, res): Promise<object> {
       let { p, s, q } = req.query;
