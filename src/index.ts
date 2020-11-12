@@ -5,7 +5,7 @@ import * as express from "express"
 const app = express();
 import adminv1 from "../routes/admin/v1"
 import userv1 from "../routes/user/v1"
-const port = 3000
+const port = process.env.PORT || 3000
 
 
 createConnection().then(async connection => {
