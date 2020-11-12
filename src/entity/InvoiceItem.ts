@@ -28,6 +28,6 @@ export class InvoiceItem extends BaseEntity{
 product: Product
 
 @ManyToOne ((type)=> Invoice, (invoice)=>invoice.invoiceItems)
-invoice : InvoiceItem[];
+invoice : Invoice;
 
 }
