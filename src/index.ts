@@ -15,6 +15,6 @@ app.use("/admin/v1",adminv1)
 
 
 app.listen(port,()=>{
-    console.log(`Running on port ${port}`)
+console.log(`Running on port ${port}`)
 })
 })
