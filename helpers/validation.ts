@@ -89,10 +89,55 @@ static makeCategory = (must = true) => ({
             presence : must,
             type: "number"
             
+        },
+        category :{
+            presence : must,
+            type: "number"
+            
+        },
+        image:{
+            presence : must,
+            type: "string"
+            
         }
      
         
         })
 
 
+        static makeInvoice = (must = true) => ({
+
+            address: {
+                presence: must,
+                type: "string",
+              },
+            //   method: {
+            //     presence: must,
+            //     type: "string",
+            //     inclusion: {
+            //       within: {
+            //         zc: "zc",
+            //         ah: "ah",
+            //         cd: "cd",
+            //       },
+            //       message: "^%{value} is not valid",
+            //     },
+            //   },
+           
+              products: {
+                presence: must,
+                type: "array",
+              },
+            })    
+
+            static oneProduct = (must = true) => ({
+                id: {
+                  presence: must,
+                  type: "number",
+                },
+                quantity: {
+                  presence: must,
+                  type: "number",
+                },
+              });
 }

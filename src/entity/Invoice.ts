@@ -40,10 +40,10 @@ export class Invoice extends BaseEntity{
     @Column()
     status: string;
 
-    @Column()
+    @Column({ nullable: true})
     long: number;
 
-    @Column()
+    @Column({ nullable: true})
     lat: number;
 
 

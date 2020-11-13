@@ -15,7 +15,7 @@ export default userAuth = async (req, res, next): Promise<object> => {
 
   let payload: any;
   try {
-    payload = jwt.verify(token, config.adminJwtSecret);
+    payload = jwt.verify(token, config.userJwtSecret);
   } catch (error) {
     return errRes(res, "Invalid token");
   }

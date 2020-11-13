@@ -11,14 +11,11 @@ import config from "../../config";
 import { Like, Raw } from "typeorm";
 import { Category } from "../../src/entity/Category";
 import { Product } from "../../src/entity/Products";
+import { Invoice } from "../../src/entity/Invoice";
+import { InvoiceItem } from "../../src/entity/InvoiceItem";
 
 export default class UserController{
-    static makeCategory(arg0: string, makeCategory: any) {
-        throw new Error("Method not implemented.");
-    }
-    static makeProduct(arg0: string, makeProduct: any) {
-        throw new Error("Method not implemented.");
-    }
+
 //------------------------------------------------------------------------------------------------//
 
 
@@ -42,7 +39,7 @@ user = await User.create({
 await user.save()
 
 // sendSMS(` Your OTP: ${user.otp}`, user.phone);
-const token = jwt.sign({ id: user.id }, config.jwtSecret);
+const token = jwt.sign({ id: user.id }, config.userJwtSecret);
 return okRes(res, { data: { user, token } });
 }
 
@@ -61,7 +58,7 @@ static OTP = async (req, res): Promise<object> => {
     const token = req.headers.token;
     let payload: any;
     try {
-      payload = jwt.verify(token, config.jwtSecret);
+      payload = jwt.verify(token, config.userJwtSecret);
     } catch (error) {
       return errRes(res, "Invalid Token");
     }
@@ -106,7 +103,7 @@ static OTP = async (req, res): Promise<object> => {
       let validPassword = await comparePassword(req.body.password, user.password);
       if (!validPassword) return errRes(res, `Please check your data`);
 
-      const token = jwt.sign({ id: user.id }, config.jwtSecret);
+      const token = jwt.sign({ id: user.id }, config.userJwtSecret);
 
       return okRes(res, { data: { token } });
     }
@@ -183,8 +180,101 @@ static OTP = async (req, res): Promise<object> => {
     }
   }
 
+    //-----------------------------------------------------------------------//
+
+    static async makeInvoice(req, res): Promise<object> {
+
+      let notValid = validate(req.body, Validate.makeInvoice());
+      if (notValid) return errRes(res, notValid);
+
+
+      let ids = [];
+      for (const product of req.body.products) {
+        let notValid = validate(product, Validate.oneProduct());
+        if (notValid) return errRes(res, notValid);
+        ids.push(product.id);
+      }
   
+     
+      let user = req.user;
+  
+      let products = await Product.findByIds(ids, { where: { active: true } });
+  
+      [{ id: 1, quantity: 1 }];
+  
+      let total = 0;
+     
+      for (const product of products) {
+        total =
+          total +
+          product.price *
+            req.body.products.filter((e) => e.id == product.id)[0].quantity;
+      }
+  
+     
+      let invoice: any;
+      invoice = await Invoice.create({
+        ...req.body,
+        total,
+        status: "pending",
+        user,
+      });
+      await invoice.save();
+      
+      
+      
+
+
+      for (const product of products) {
+        let invoiceItem = await InvoiceItem.create({ 
+          quantity: req.body.products.filter((e) => e.id == product.id)[0]
+            .quantity,
+          invoice,
+          subtotal:
+            req.body.products.filter((e) => e.id == product.id)[0].quantity *
+            product.price,
+          product,
+        });
+        await invoiceItem.save();
+      }
+  
+      return okRes(res, { data: { invoice } });
+    }
+
+
+
+
+//-----------------------------------------------------------------------//
+
+static async userInvoices(req, res): Promise<object> {
+
+let user: any
+user=req.user
+console.log(user)
+let invoices = await Invoice.find( { where: {user }});
+
+
+
+
+
+
+return okRes(res, { data: { invoices } });
+
+
+
+
+
+
+}
+
+
+
+
+
+
+    }
+
+
   
   
 
-}

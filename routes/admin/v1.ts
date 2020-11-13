@@ -1,10 +1,11 @@
-import UserController from "../../controllers/app/userController";
+import UserController from "../../controllers/dash/adminController";
 import router from "../user/v1";
 
 
 
 
 
-router.post("/makeCategory", UserController.makeCategory);//
-router.post("/makeProduct/:category", UserController.makeProduct);//
+router.post("/makecategory", UserController.makeCategory);//
+router.post("/makeproduct", UserController.makeProduct);//
+router.get("/allinvoices", UserController.allInvoices);//
 export default router

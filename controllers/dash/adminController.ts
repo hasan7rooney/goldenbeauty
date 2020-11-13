@@ -3,6 +3,7 @@ import validate = require("validate.js");
 import { errRes, okRes } from "../../helpers/tools";
 import Validate from "../../helpers/validation";
 import { Category } from "../../src/entity/Category";
+import { Invoice } from "../../src/entity/Invoice";
 import { Product } from "../../src/entity/Products";
 
     
@@ -35,13 +36,13 @@ import { Product } from "../../src/entity/Products";
    static async makeProduct(req:Request, res:Response){
     let notValid = validate(req.body, Validate.makeProduct());
     if (notValid) return errRes(res, notValid);
-    let  category = req.params.category;
+    
   
   let product: any
   product = await Product.create({
    ...req.body,
    active: true,
-   category
+   
   })
   await product.save()
   
@@ -50,4 +51,21 @@ import { Product } from "../../src/entity/Products";
   }
     
   
+
+//----------------------------------------------------------------------//
+
+  static async allInvoices(req, res): Promise<object> {
+
+    
+    let data = await Invoice.find({
+        where: { status: "pending"||"done" ||null}
+        })
+    
+    
+    
+    
+    
+    return okRes(res, { data: { data } });
+    
+  }
 }
