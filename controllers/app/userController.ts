@@ -174,7 +174,7 @@ static OTP = async (req, res): Promise<object> => {
         take,
         skip,
       });
-      return okRes(res, { data });
+      return okRes( res, data );
     } catch (error) {
       return errRes(res, error);
     }
