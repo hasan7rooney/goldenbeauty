@@ -182,6 +182,44 @@ static OTP = async (req, res): Promise<object> => {
 
     //-----------------------------------------------------------------------//
 
+
+
+    static async getAllProducts(req, res): Promise<object> {
+      let { p, s, q } = req.query;
+      let { skip, take } = paginate(p, s);
+      
+      const active = true;
+  
+      let whereObj: any;
+      if (q)
+        whereObj = [
+          {
+            active,
+            
+            title: Raw((alias) => `${alias} ILIKE '%${q}%'`),
+          },
+          {
+            active,
+            
+            description: Raw((alias) => `${alias} ILIKE '%${q}%'`),
+          },
+        ];
+      else whereObj = { active };
+      try {
+        let data = await Product.find({
+          where: whereObj,
+          relations: ["category"],
+          take,
+          skip,
+        });
+        return okRes( res, data );
+      } catch (error) {
+        return errRes(res, error);
+      }
+    }
+  
+      //-----------------------------------------------------------------------//
+
     static async makeInvoice(req, res): Promise<object> {
 
       let notValid = validate(req.body, Validate.makeInvoice());
