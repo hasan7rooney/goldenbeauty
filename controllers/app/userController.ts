@@ -149,7 +149,7 @@ static OTP = async (req, res): Promise<object> => {
   static async getProducts(req, res): Promise<object> {
     let { p, s, q } = req.query;
     let { skip, take } = paginate(p, s);
-   
+    let category = req.params.category;
     const active = true;
 
     let whereObj: any;
@@ -157,16 +157,16 @@ static OTP = async (req, res): Promise<object> => {
       whereObj = [
         {
           active,
-         
+          category,
           title: Raw((alias) => `${alias} ILIKE '%${q}%'`),
         },
         {
           active,
-          
+          category,
           description: Raw((alias) => `${alias} ILIKE '%${q}%'`),
         },
       ];
-    else whereObj = { active };
+    else whereObj = { active,category };
     try {
       let data = await Product.find({
         where: whereObj,
