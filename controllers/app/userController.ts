@@ -105,7 +105,7 @@ static OTP = async (req, res): Promise<object> => {
 
       const token = jwt.sign({ id: user.id }, config.userJwtSecret);
 
-      return okRes(res, {user, token}  );
+      return okRes(res,{data:{token} }  );
     }
 
  //----------------------------------------------------------------------//
