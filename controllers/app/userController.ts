@@ -88,7 +88,7 @@ static OTP = async (req, res): Promise<object> => {
 
 
 
-    static async login(req: Request, res: Response): Promise<object> {
+static async login(req:Request, res:Response) {
       let notValid = validate(req.body, Validate.login());
       if (notValid) return errRes(res, notValid);
 
