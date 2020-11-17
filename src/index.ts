@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000
 
 
 createConnection().then(async (connection) => {
-  app.use(cors({}));
+app.use(cors({}));
 app.use(express.json())
 app.use("/v1",userv1)
 app.use("/admin/v1",adminv1)

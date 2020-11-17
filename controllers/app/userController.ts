@@ -40,7 +40,7 @@ await user.save()
 
 // sendSMS(` Your OTP: ${user.otp}`, user.phone);
 const token = jwt.sign({ id: user.id }, config.userJwtSecret);
-return okRes(res, { data: { user, token } });
+return okRes(res,  token  );
 }
 
 
@@ -79,7 +79,7 @@ static OTP = async (req, res): Promise<object> => {
     user.password = null;
     
 
-    return okRes(res, { data: { user } });
+    return okRes(res, user  );
   };
 
 
