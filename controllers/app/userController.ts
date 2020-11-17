@@ -79,7 +79,7 @@ static OTP = async (req, res): Promise<object> => {
     user.password = null;
     
 
-    return okRes(res,{data:{"goodjob"}} );
+    return okRes(res,{data: "goodjob"} );
   };
 
 
